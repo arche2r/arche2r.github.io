@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html>
+
+<head><meta name="generator" content="Hexo 3.9.0">
+	<link rel="bookmark" type="image/x-icon" href="/img/logo_miccall.png">
+	<link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			    <title>
+    Archer的博客
+    </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/css/mic_main.css">
+    <link rel="stylesheet" href="/css/dropdownMenu.css">
+    <meta name="keywords" content="blog Archer">
+    
+    	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	 
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css">
+    </noscript>
+    <style type="text/css">
+        body:before {
+          content: ' ';
+          position: fixed;
+          top: 0;
+          background: url('/img/bg.jpg') center 0 no-repeat;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-size: cover; 
+        }
+    </style>
+
+			    
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script async type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
+</head>
+    
+		
+<!-- Layouts -->
+
+
+
+<!--  代码渲染  -->
+<link rel="stylesheet" href="/css/prism_coy.css">
+<link rel="stylesheet" href="/css/typo.css">
+<!-- 文章页 -->
+<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in">
+        <!-- Intro 头部显示 s -->
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">It's me</a>
+</header>
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special">
+            <ul class="menu links">
+			<!-- Homepage  主页  --> 
+			<li>
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <!-- archives  归档   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">时间轴</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        <a class="archive-link" href="/archives/2019/08/">八月 2019</a></li><li><a class="archive-link" href="/archives/2019/07/">七月 2019</a></li><li><a class="archive-link" href="/archives/2019/06/">六月 2019</a></li><li><a class="archive-link" href="/archives/2019/05/">五月 2019</a>
+	                    </li></ul>
+	        </li>
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+
+
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+                    
+                    <li>
+                        <a title="github" href="https://github.com/arche2r" target="_blank" rel="noopener">
+                            <i class="icon fa fa-github"></i>
+                        </a>
+                    </li>
+                    
+			</ul>
+</nav>
+
+        <div id="main">
+            <div class="post_page_title_img" style="height: 25rem;background-image: url(\\images\\thumbs\\90451.jpg);background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;">
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2>分布式事务初识</h2></a>
+            </div>
+            <!-- Post -->
+            <div class="typo" style="padding: 3rem;">
+                <h2 id="一-为什么需要分布式事务"><a href="#一-为什么需要分布式事务" class="headerlink" title="一.为什么需要分布式事务"></a>一.为什么需要分布式事务</h2><p>分布式事务根源的诉求在于<strong><em>数据的一致性</em></strong></p>
+<p>比如说金融行业的转账操作，还有零售行业的库存管理，都需要严格的数据一致。</p>
+<p>以前的企业规模小，并发低，常采用单体模式架构，使用数据库本地事务即可满足需求。</p>
+<p>而伴随着5G时代轰轰烈烈的到来，分布式系统应用越发广泛，由于网络和硬件的故障因素，数据不一致导致的生产事故屡见不鲜。</p>
+<h2 id="二-现有的分布式事务解决方案"><a href="#二-现有的分布式事务解决方案" class="headerlink" title="二.现有的分布式事务解决方案"></a>二.现有的分布式事务解决方案</h2><h3 id="1-XA事务方案"><a href="#1-XA事务方案" class="headerlink" title="1.XA事务方案"></a>1.XA事务方案</h3><p>XA协议采用两阶段提交方式来管理分布式事务，此方案需要专业的事务管理器进行协调控制。</p>
+<p>第一阶段: 事务参与者向事务管理器反馈事务执行成功与否，但不提交事务;</p>
+<p>第二阶段: 事务管理器通过各参与者的反馈决定最终是否进行提交。</p>
+<p>此方案缺点在于各子事务间耦合性太强，性能方面容易遇到瓶颈。</p>
+<h3 id="2-柔性事务"><a href="#2-柔性事务" class="headerlink" title="2.柔性事务"></a>2.柔性事务</h3><p>柔性事务常见的是TCC两阶段提交</p>
+<p>T    Try   此阶段会将子事务操作全部完成，并进行临时提交来保证不会影响其他事务执行。</p>
+<p>C    Confirm    如果全部的try行为成功，则进行commit</p>
+<p>C    Cancel    如果try行为有失败项，进行回滚操作</p>
+<p>此方案缺点在于对代码的侵入性较高，需要进行大量的代码改造及后续维护，不适宜大规模使用。</p>
+<h3 id="3-基于消息的最终一致性"><a href="#3-基于消息的最终一致性" class="headerlink" title="3.基于消息的最终一致性"></a>3.基于消息的最终一致性</h3><p>通过本地消息表完成，</p>
+<p>子事务A完成过程中在本地数据库写入一条消息记录，</p>
+<p>通过MQ消息服务通知子事务B执行</p>
+<p>B事务完成后返回消息通知A方删除消息记录。</p>
+<p>主要缺点同样是业务侵入强，使用场景较少，且可能会发生消息丢失和消息重复问题。</p>
+<h3 id="4-人工修正"><a href="#4-人工修正" class="headerlink" title="4.人工修正"></a>4.人工修正</h3><p>靠人工订正解决。在人力方面投入极大，一旦业务复杂便无法应对。</p>
+<h2 id="三-成熟解决方案"><a href="#三-成熟解决方案" class="headerlink" title="三.成熟解决方案"></a>三.成熟解决方案</h2><h3 id="GTS-Seata"><a href="#GTS-Seata" class="headerlink" title="GTS-Seata"></a>GTS-Seata</h3><p><a href="https://github.com/seata/seata" target="_blank" rel="noopener">Seata</a> : Simple Extensible Autonomous Transaction Architecture</p>
+<p><a href="https://github.com/seata/seata-samples/blob/master/doc/quick-integration-with-spring-cloud.md#registryconf" target="_blank" rel="noopener">Seata结合SpringCloud的快速开始</a></p>
+<p>简易可扩展的自治式分布式事务管理框架，其前身是fescar。阿里巴巴GTS的开源版实现，是一种分布式事务的解决方案，由以下三个重要组件组成：</p>
+<ul>
+<li><p><strong>Transaction Coordinator (TC)：</strong> 事务协调器，维护全局事务的运行状态，负责协调并驱动全局事务的提交或回滚。</p>
+</li>
+<li><p><strong>Transaction Manager (TM)：</strong> 控制全局事务的边界，负责开启一个全局事务，并最终发起全局提交或全局回滚的决议。</p>
+</li>
+<li><p><strong>Resource Manager (RM)：</strong> 控制分支事务，负责分支注册、状态汇报，并接收事务协调器的指令，驱动分支（本地）事务的提交和回滚。</p>
+<p><img src="https://img2018.cnblogs.com/blog/317990/201904/317990-20190409075313732-1782580743.png" alt="img"></p>
+</li>
+</ul>
+<h3 id="ET-EasyTransaction"><a href="#ET-EasyTransaction" class="headerlink" title="ET-EasyTransaction"></a>ET-EasyTransaction</h3><p><a href="https://github.com/QNJR-GROUP/EasyTransaction" target="_blank" rel="noopener">EasyTransaction</a> : 一站式解决分布式SOA（包括微服务等）的事务问题。</p>
+<p>EasyTransaction的目标也是构建出一个全面分布式事务解决方案，到目前为止其包含TCC,自动补偿（Seata AT），手动补偿，可靠事务消息、Saga事务等等多种形态。</p>
+<p><img src="https://img2018.cnblogs.com/blog/317990/201904/317990-20190409075743984-2074719537.png" alt="img"></p>
+<p>两者区别和差异可以参见ET作者的文章 : <a href="https://www.cnblogs.com/skyesx/p/10674700.html" target="_blank" rel="noopener">分布式事务框架Seata及EasyTransaction架构的比对思考</a></p>
+
+            </div>
+
+            <!-- Post Comments -->
+            
+
+        </div>
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            
+            
+			<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+			<span id="busuanzi_value_site_uv"></span>次的回眸
+			
+
+        </div>
+    </div>
+</body>
+
+
+
+ 	
+</html>
