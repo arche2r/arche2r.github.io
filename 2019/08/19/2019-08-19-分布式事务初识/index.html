@@ -139,8 +139,7 @@
 <p>C    Confirm    如果全部的try行为成功，则进行commit</p>
 <p>C    Cancel    如果try行为有失败项，进行回滚操作</p>
 <p>此方案缺点在于对代码的侵入性较高，需要进行大量的代码改造及后续维护，不适宜大规模使用。</p>
-<h3 id="3-基于消息的最终一致性"><a href="#3-基于消息的最终一致性" class="headerlink" title="3.基于消息的最终一致性"></a>3.基于消息的最终一致性</h3><p>####3.1强耦合消息</p>
-<p>通过本地消息表完成，</p>
+<h3 id="3-基于消息的最终一致性"><a href="#3-基于消息的最终一致性" class="headerlink" title="3.基于消息的最终一致性"></a>3.基于消息的最终一致性</h3><h4 id="3-1强耦合消息"><a href="#3-1强耦合消息" class="headerlink" title="3.1强耦合消息"></a>3.1强耦合消息</h4><p>通过本地消息表完成，</p>
 <ul>
 <li><p>子事务A完成过程中在本地数据库写入一条消息记录，</p>
 </li>
@@ -154,7 +153,8 @@
 <ul>
 <li>发送方递交prepare消息</li>
 <li>MQ对消息进行持久化，返回Offset信息</li>
-<li>发送方执行本地事务，通过Offset去访问MQ，并修改消息状态(<del>若超时或未通知则MQ进行事务回查，旧版本回查修改offset内存信息会导致脏页问题阻塞IO已被废弃，最新实现基于数据库，具体逻辑未开源</del>)</li>
+<li>发送方执行本地事务，通过Offset去访问MQ，并修改消息状态</li>
+<li>(<del>若超时或未通知则MQ进行事务回查，旧版本回查修改offset内存信息会导致脏页问题阻塞IO已被废弃，最新实现基于数据库，具体逻辑未开源</del>)</li>
 </ul>
 <p>主要缺点是需要两次消息，并且消息丢失问题未解决</p>
 <p>关于消息的重复消费问题，可以在消费方落地数据库,保存消费信息Id,执行前先进行查询</p>
@@ -168,13 +168,12 @@
 <li><p><strong>Transaction Manager (TM)：</strong> 控制全局事务的边界，负责开启一个全局事务，并最终发起全局提交或全局回滚的决议。</p>
 </li>
 <li><p><strong>Resource Manager (RM)：</strong> 控制分支事务，负责分支注册、状态汇报，并接收事务协调器的指令，驱动分支（本地）事务的提交和回滚。</p>
-<p><img src="/img/0819-1.png" alt="img"></p>
-</li>
+<p><center>  <img src="/img/0819-1.png" alt="img"> </center> </p>
+<h3 id="ET-EasyTransaction"><a href="#ET-EasyTransaction" class="headerlink" title="ET-EasyTransaction"></a>ET-EasyTransaction</h3></li>
 </ul>
-<h3 id="ET-EasyTransaction"><a href="#ET-EasyTransaction" class="headerlink" title="ET-EasyTransaction"></a>ET-EasyTransaction</h3><p><a href="https://github.com/QNJR-GROUP/EasyTransaction" target="_blank" rel="noopener">EasyTransaction</a> : 一站式解决分布式SOA（包括微服务等）的事务问题。</p>
+<p><a href="https://github.com/QNJR-GROUP/EasyTransaction" target="_blank" rel="noopener">EasyTransaction</a> : 一站式解决分布式SOA（包括微服务等）的事务问题。</p>
 <p>EasyTransaction的目标也是构建出一个全面分布式事务解决方案，到目前为止其包含TCC,自动补偿（Seata AT），手动补偿，可靠事务消息、Saga事务等等多种形态。</p>
-<p><img src="/img/0819-2.png" alt="img"></p>
-<p>两者区别和差异可以参见ET作者的文章 : <a href="https://www.cnblogs.com/skyesx/p/10674700.html" target="_blank" rel="noopener">分布式事务框架Seata及EasyTransaction架构的比对思考</a></p>
+<p><center>   <img src="/img/0819-2.png" alt="img"> </center><br>两者区别和差异可以参见ET作者的文章 : <a href="https://www.cnblogs.com/skyesx/p/10674700.html" target="_blank" rel="noopener">分布式事务框架Seata及EasyTransaction架构的比对思考</a></p>
 
             </div>
 
